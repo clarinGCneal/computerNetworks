@@ -1,3 +1,5 @@
+# Socket echo client
+
 import socket
 
 # Create a TCP/IP socket
@@ -11,7 +13,7 @@ sock.connect(server_address)
 try:
     while True:  # Keep asking for user input
         # Send data
-        message = input("Enter a message (or 'exit' to quit): ")  # Get user input
+        message = input("Enter a message ('exit' to quit): ")  # Get user input
         if message == 'exit':
             break  # Exit the loop if the user types 'exit'
         print('sending: ', message)

@@ -1,4 +1,4 @@
-# multiconn-server.py
+# multiconn-server
 
 import socket
 import selectors
@@ -16,11 +16,11 @@ def create_read_func(address):
     def read(connection, mask):
         data = connection.recv(16)
         if data:
-            print('received ', data.decode())
+            print('received: ', data.decode())
             print('sending data back to the client')
             connection.sendall(data)
         else:
-            print('closing connection from', address)  # Print client address
+            print('closing connection to', address)
             selection.unregister(connection)
             connection.close()
     return read
@@ -29,13 +29,13 @@ def create_read_func(address):
 lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = ('localhost', 14344)
 lsock.bind(server_address)
-print('listening on {} port {}'.format(*server_address))
 lsock.listen()
+print('listening on {} port {}'.format(*server_address))
 lsock.setblocking(False)
-selection.register(lsock, selectors.EVENT_READ, data=accept)
+selection.register(lsock, selectors.EVENT_READ, accept)
 
+# Main loop
 while True:
-    print('waiting for a connection')
     events = selection.select()
     for key, mask in events:
         callback = key.data
